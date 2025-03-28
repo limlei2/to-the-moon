@@ -9,6 +9,7 @@ import LoggedInNavbar from "./components/LoggedInNavbar";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function App() {
+  const user = localStorage.getItem("token");
   return (
     <Router>
       <div className="App">
