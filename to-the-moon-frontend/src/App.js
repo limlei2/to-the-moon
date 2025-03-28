@@ -13,7 +13,9 @@ function App() {
   return (
     <Router>
       <div className="App">
-        <Navbar />
+        {
+          user ? (<LoggedInNavbar />) : (<Navbar />)
+        }
         <Routes>
             <Route index element={<Home />}/>
             <Route path="/" element={<Home />}/>
