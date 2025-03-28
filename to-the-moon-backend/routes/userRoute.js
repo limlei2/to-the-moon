@@ -19,12 +19,11 @@ router.post("/register", async (req, res) => {
         dotenv.config();
         const salt = await genSalt(Number(process.env.SALT));
         const hashedPassword = await hash(req.body.password, salt);
-
         await new User({ ...req.body, password: hashedPassword}).save();
         res.status(201).send({message: "User Created Successfully!"});
 
     } catch (err){
-        res.status(500).send({message: "Internal Server Error"})
+        res.status(500).send({message: err.message})
     }
 });
 
@@ -51,7 +50,7 @@ const loginValidate = (data) => {
         email: joi.string().email().required().label("Email"),
         password: joi.string().required().label("Password")
     });
-    return schema.loginValidate(data);
+    return schema.validate(data);
 }
 
 
