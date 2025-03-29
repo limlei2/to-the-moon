@@ -3,8 +3,10 @@ import React from 'react'
 const Navbar = () => {
   return (
     <div>
-      Hi
+        Navbar
+        <button>Log In</button>
     </div>
+    
   )
 }
 
