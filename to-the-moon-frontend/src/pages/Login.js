@@ -24,6 +24,12 @@ const Login = () => {
     return (
         <div>
             Login
+            <textarea>
+                Email
+            </textarea>
+            <textarea>
+                Password
+            </textarea>
         </div>
     )
 }
