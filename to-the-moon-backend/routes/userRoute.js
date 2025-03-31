@@ -21,9 +21,8 @@ router.post("/register", async (req, res) => {
         const hashedPassword = await hash(req.body.password, salt);
         await new User({ ...req.body, password: hashedPassword}).save();
         res.status(201).send({message: "User Created Successfully!"});
-
     } catch (err){
-        res.status(500).send({message: err.message})
+        res.status(500).send({message: "Internal Server Error. Please try again later"})
     }
 });
 

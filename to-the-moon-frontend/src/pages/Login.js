@@ -1,5 +1,5 @@
-import React, {useState} from 'react'
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState}  from 'react'
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { login } from '../store/userSlice';
 import { Link } from 'react-router-dom';
@@ -9,6 +9,7 @@ const Login = () => {
     //states
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState(''); 
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -23,22 +24,18 @@ const Login = () => {
                 const token = response.data.data;
                 dispatch(login({ id: id, token: token }));
                 navigate('/');
+                setEmail('');
+                setPassword('');
             } else if (response.status === 401){
                 alert('Invalid email or password');
             } else {
                 alert('Internal Server Error')
             }
         } catch (error) {
-            // Handle any network or other errors
-            if (error.status === 401){
-                alert('Invalid email or password');
-            } else {
-                alert('Internal Server Error')
-            }
+            setError(error.response ? error.response.data.message : 'An error occurred during login.');
             console.error('Error during login:', error);
+            setPassword("");
         }
-        setEmail('');
-        setPassword('');
     }
 
     return (
@@ -75,6 +72,11 @@ const Login = () => {
                             Login
                         </button>
                     </p>
+                    {error && (
+                        <div className="mt-4 bg-red-500 text-white p-2 rounded animate-pulse">
+                            {error}
+                        </div>
+                    )}
                 </form>
                 <p className="mt-6 text-sm text-white">
                     Not registered? <Link to="/register" className="text-indigo-400 hover:text-indigo-300">Create an account now!</Link>
