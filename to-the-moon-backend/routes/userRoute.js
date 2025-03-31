@@ -34,12 +34,15 @@ router.post("/login", async (req, res) => {
             return res.status(400).send({message: error.details[0].message});
         }
         const user = await User.findOne({email: req.body.email});
+        if (!user) {
+            return res.status(401).send({message: "Invalid email or password"});
+        }
         const validPassword = await compare(req.body.password, user.password);
-        if(!user || !validPassword){
+        if(!validPassword){
             return res.status(401).send({message: "Invalid email or password"});
         }
         const token = user.generateAuthToken();
-        res.status(200).send({data: token, message: "Logged In Successfully!"});
+        res.status(200).send({data: token, id: user._id, message: "Logged In Successfully!"});
     } catch (err) {
         res.status(500).send({message: "Internal Server Error"})
     }
