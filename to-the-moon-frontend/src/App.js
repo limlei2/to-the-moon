@@ -6,10 +6,13 @@ import NoPage from "./pages/NoPage"
 import Navbar from "./components/Navbar"
 import LoggedInNavbar from "./components/LoggedInNavbar";
 
+import { useSelector } from "react-redux";
+import { selectUser } from "./store/userSlice";
+
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function App() {
-  const user = localStorage.getItem("token");
+  const user = useSelector(selectUser);
   return (
     <Router>
       <div className="App">
