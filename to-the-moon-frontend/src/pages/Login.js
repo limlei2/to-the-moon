@@ -42,7 +42,7 @@ const Login = () => {
         <div className="bg-black text-white min-h-screen flex items-center justify-center">
             <div className="bg-gray-900 shadow-lg rounded p-8 w-full max-w-md">
                 <div>
-                    <h1 className="text-white text-2xl font-semibold">Login</h1>
+                    <h1 className="text-white text-2xl font-semibold" style={{fontFamily: 'TypeMachine, sans-serif'}}>Login</h1>
                     <h2 className="mt-2 text-white">Sign in to your account to continue</h2>
                 </div>
                 <form className="mt-6 space-y-6" onSubmit={submit}>

@@ -10,24 +10,52 @@ const Home = () => {
   const user = useSelector(selectUser);
 
   return (
-    <div className="min-h-screen bg-black text-white">
-    <div className="bg-blue-900 text-white p-12 flex items-center">
-      <div className="w-1/2">
-        <h1 className="text-4xl font-bold mb-4">Stock Market Tracker</h1>
-        <p className="text-2xl mb-8">
-          Your all in one stock tracking app to help your investments skyrocket to the moon
-        </p>
-        <p className="mb-4">
-          to-the-moon is a free service! Get started now!
-        </p>
-        <Link to="/register" className="bg-yellow-300 hover:bg-yellow-400 text-blue-900 font-semibold py-2 px-4 rounded-full">
-          Get Started
-        </Link>
+    <div>
+      <div className="min-h-screen bg-gray-900 text-white p-12 flex items-center">
+        <div className="w-1/2">
+          <h1 className="text-6xl font-bold mb-4" style={{fontFamily: 'TypeMachine, sans-serif'}}>to-the-moon</h1>
+          <p className="text-2xl mb-8">
+            Your all in one stock tracking app to help your investments skyrocket to the moon!
+          </p>
+          <p className="mb-4">
+            to-the-moon is a free service! Get started now!
+          </p>
+          <Link to="/register" className="bg-yellow-300 hover:bg-yellow-500 text-blue-900 font-semibold py-2 px-4 rounded-full">
+            Get Started
+          </Link>
+        </div>
+        <div className="w-1/2 flex items-center justify-center">
+          <img className="h-80" src=""/>
+        </div>
       </div>
-      <div className="w-1/2 flex items-center justify-center">
-        <img className="h-80" src=""/>
+      <div className="bg-[#68a4dc] p-12 flex items-center">
+        <div className="w-1/2">
+          <h1 className="text-3xl mb-2 text-gray-800" style={{fontFamily: 'TypeMachine, sans-serif'}}>Stay ahead of the game</h1>
+          <p className="text-md mb-8 text-black">
+          Leverage our advanced machine learning models to gain insights into stock market trends. 
+          By tracking the stocks that matter most to you, you can develop a deeper understanding of 
+          market dynamics. This tool is designed to assist you in making informed decisions before 
+          investing your money, minimizing the potential risks.
+          </p>
+        </div>
+        <div className="w-1/2 flex items-center justify-center">
+          <img className="h-80" src=""/>
+        </div>
       </div>
-    </div>
+
+      <div className="bg-[#e0ddcf] text-gray-900 p-12 flex items-center">
+        <div className="w-1/2 flex items-center justify-center">
+          <img className="h-80" src=""/>
+        </div>
+        <div className="w-1/2">
+          <h1 className="text-3xl mb-2" style={{fontFamily: 'TypeMachine, sans-serif'}}>Track all the major stocks, ETFs, and options available to the public</h1>
+          <p className="text-md mb-8">
+          Our platform connects you to a broad selection of stocks, options, and ETFs. We offer real-time 
+          data to keep you informed and support your investment decisions. Whether you're monitoring market 
+          trends or planning your next move, our tool helps you stay ahead.
+          </p>
+        </div>
+      </div>
 
     </div>
   )

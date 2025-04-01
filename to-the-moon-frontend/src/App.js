@@ -14,21 +14,22 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 function App() {
   const user = useSelector(selectUser);
   return (
-    <Router>
-      <div className="App">
-        {
-          user ? (<LoggedInNavbar />) : (<Navbar />)
-        }
-        <Routes>
-            <Route index element={<Home />}/>
-            <Route path="/" element={<Home />}/>
-            <Route path="/register" element={<Register />}/>
-            <Route path="/login" element={<Login />}/>
-            <Route path="*" element={<NoPage />}/>
-        </Routes>
-      </div>
-    </Router>
-    
+    <>
+      <Router>
+        <div className="App">
+          {
+            user ? (<LoggedInNavbar />) : (<Navbar />)
+          }
+          <Routes>
+              <Route index element={<Home />}/>
+              <Route path="/" element={<Home />}/>
+              <Route path="/register" element={<Register />}/>
+              <Route path="/login" element={<Login />}/>
+              <Route path="*" element={<NoPage />}/>
+          </Routes>
+        </div>
+      </Router>
+      </>
   );
 }
 
