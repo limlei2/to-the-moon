@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@polygon.io/client-js": "^7.4.0",
     "@reduxjs/toolkit": "^2.6.1",
     "@tailwindcss/postcss": "^4.0.17",
     "@testing-library/dom": "^10.4.0",
