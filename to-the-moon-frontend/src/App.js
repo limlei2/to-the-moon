@@ -19,7 +19,7 @@ function App() {
       <Router>
         <div className="App">
           {
-            user ? (<LoggedInNavbar />) : (<Navbar />)
+            !user ? (<LoggedInNavbar />) : (<Navbar />)
           }
           <Routes>
               <Route index element={<Home />}/>

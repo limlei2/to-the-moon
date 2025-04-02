@@ -1,4 +1,5 @@
 import React from 'react'
+import Search from './Search'
 
 const LoggedInNavbar = () => {
   return (
@@ -8,7 +9,9 @@ const LoggedInNavbar = () => {
             <img src="https://cdn0.iconfinder.com/data/icons/coloricons/50/50X50-02-1024.png" className="h-14" alt="to-the-moon"/>
             <span className="self-center text-3xl font-semibold whitespace-nowrap dark:text-white">to-the-moon</span>
         </a>
-        
+        <div>
+          <Search />
+        </div>
         <div className="items-center justify-between">
           <ul className="flex flex-row p-4 text-lg space-x-8 dark:bg-black">
             <li>
