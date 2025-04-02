@@ -46,7 +46,7 @@ const Home = () => {
             </Link>
           </div>
           <div className="w-1/2 flex items-center justify-center">
-            <img className="h-80" src=""/>
+            <img className="h-80" src="null" alt=""/>
           </div>
         </div>
         <div className="bg-[#68a4dc] p-12 flex items-center">
@@ -60,13 +60,13 @@ const Home = () => {
             </p>
           </div>
           <div className="w-1/2 flex items-center justify-center">
-            <img className="h-80" src=""/>
+            <img className="h-80" src="null" alt=""/>
           </div>
         </div>
   
         <div className="bg-[#e0ddcf] text-gray-900 p-12 flex items-center">
           <div className="w-1/2 flex items-center justify-center">
-            <img className="h-80" src=""/>
+            <img className="h-80" src="null" alt=""/>
           </div>
           <div className="w-1/2">
             <h1 className="text-3xl mb-2" style={{fontFamily: 'TypeMachine, sans-serif'}}>Track all the major stocks, ETFs, and options available to the public</h1>

@@ -2,6 +2,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Home from "./pages/Home";
 import NoPage from "./pages/NoPage"
+import StockPage from "./pages/StockPage"
 
 import Navbar from "./components/Navbar"
 import LoggedInNavbar from "./components/LoggedInNavbar";
@@ -25,6 +26,7 @@ function App() {
               <Route path="/" element={<Home />}/>
               <Route path="/register" element={<Register />}/>
               <Route path="/login" element={<Login />}/>
+              <Route path="/stock" element={<StockPage />}/>
               <Route path="*" element={<NoPage />}/>
           </Routes>
         </div>
