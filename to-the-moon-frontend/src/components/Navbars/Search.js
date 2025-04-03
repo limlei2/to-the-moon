@@ -1,20 +1,35 @@
-import React, { useState } from 'react'
-import { mockSearchResults } from "../../mockData/mock"
+import React, { useState, useEffect } from 'react'
 import { SearchIcon, XIcon } from '@heroicons/react/solid';
 import SearchResults from './SearchResults';
+import { searchSymbols } from '../../api/stock-api';
 
 const Search = () => {
     const [input, setInput] = useState("");
-    const [bestMatches, setBestMatches] = useState(mockSearchResults.result);
+    const [bestMatches, setBestMatches] = useState([]);
 
     const clear = () => {
         setInput("");
         setBestMatches([]);
     }
 
-    const updateBestMatches = () => {
-        setBestMatches(mockSearchResults.result)
+    const updateBestMatches = async () => {
+        try {
+            if(input) {
+                const searchResults = await searchSymbols(input);
+                const result = searchResults.result;
+                setBestMatches(result);
+            }
+        } catch (err){
+            setBestMatches([]);
+            console.log(err);
+        }
     }
+
+    useEffect(() => {
+        if (!input.trim()) {
+          setBestMatches([]);
+        }
+      }, [input]);
 
   return (
     <div className="flex items-center my-4 border-2 rounded-md relative z-50 w-96 bg-gray-900 border-gray-800">

@@ -26,7 +26,7 @@ function App() {
               <Route path="/" element={<Home />}/>
               <Route path="/register" element={<Register />}/>
               <Route path="/login" element={<Login />}/>
-              <Route path="/stock" element={<StockPage />}/>
+              <Route path="/stock/:tickerSymbol" element={<StockPage />} />
               <Route path="*" element={<NoPage />}/>
           </Routes>
         </div>

@@ -13,6 +13,7 @@ const Home = () => {
 
   if(user){
     const rest = restClient(process.env.REACT_APP_POLYGON_KEY);
+
     rest.reference.tickers({
       market: "stocks",
       active: "true",
