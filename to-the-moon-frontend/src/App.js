@@ -4,8 +4,8 @@ import Home from "./pages/Home";
 import NoPage from "./pages/NoPage"
 import StockPage from "./pages/StockPage"
 
-import Navbar from "./components/Navbar"
-import LoggedInNavbar from "./components/LoggedInNavbar";
+import Navbar from "./components/Navbars/Navbar"
+import LoggedInNavbar from "./components/Navbars/LoggedInNavbar";
 
 import { useSelector } from "react-redux";
 import { selectUser } from "./store/userSlice";

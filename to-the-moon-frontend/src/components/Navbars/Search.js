@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { mockSearchResults } from "../mockData/mock"
+import { mockSearchResults } from "../../mockData/mock"
 import { SearchIcon, XIcon } from '@heroicons/react/solid';
 import SearchResults from './SearchResults';
 
