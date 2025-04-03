@@ -40,8 +40,8 @@ const Chart = () => {
                 <AreaChart data={formatData(data)}>
                 <defs>
                     <linearGradient id="chartColor" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="rgb(199 210 254)" stopOpacity={0.8} />
-                        <stop offset="95%" stopColor="rgb(199 210 254)" stopOpacity={0} />
+                        <stop offset="5%" stopColor="#312e81" stopOpacity={0.8} />
+                        <stop offset="95%" stopColor="#312e81" stopOpacity={0} />
                     </linearGradient>
 
                 </defs>
@@ -53,7 +53,10 @@ const Chart = () => {
                         strokeWidth={0.5}
                         fill="url(#chartColor)"
                     />
-                    <Tooltip />
+                    <Tooltip 
+                        contentStyle={{backgroundColor: "#111827"}}
+                        itemStyle={{color:"#818cf8"}}
+                    />
                     <XAxis dataKey={"date"} />
                     <YAxis domain={["dataMin", "dataMax"]} />
                 </AreaChart>
