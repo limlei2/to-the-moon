@@ -3,6 +3,7 @@ import Card from '../components/StockPage/Card'
 import Details from '../components/StockPage/Details'
 import { mockCompanyDetails } from '../mockData/mock'
 import Overview from '../components/StockPage/Overview'
+import Chart from '../components/StockPage/Chart'
 
 const StockPage = () => {
   return (
@@ -11,7 +12,7 @@ const StockPage = () => {
             <Card>Header</Card>
         </div>
         <div className="md:col-span-2 row-span-4">
-            <Card>Chart</Card>
+            <Chart />
         </div>
         <div className="">
             <Overview 
