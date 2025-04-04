@@ -7,7 +7,7 @@ const LoggedInNavbar = () => {
       <div className="max-w-screen-xl flex items-center justify-between mx-auto p-4">
         <a href="/" className="flex items-center space-x-3 rtl:space-x-reverse">
             <img src="https://cdn0.iconfinder.com/data/icons/coloricons/50/50X50-02-1024.png" className="h-14" alt="to-the-moon"/>
-            <span className="self-center text-3xl font-semibold whitespace-nowrap dark:text-white">to-the-moon</span>
+            <span className="self-center text-3xl font-semibold whitespace-nowrap dark:text-white" style={{fontFamily: 'TypeMachine, sans-serif'}}>to-the-moon</span>
         </a>
         <div>
           <Search />

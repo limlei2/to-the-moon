@@ -1,62 +1,71 @@
 import React, {useState, useEffect} from 'react'
-import { mockData2, mockHistoricalData } from '../../mockData/mock'
-import { convertUnixTimestampToDate } from '../../helpers/date-helper';
+import { mockData2 } from '../../mockData/mock'
+import { convertUnixTimestampToDate, createDate, formatDate } from '../../helpers/date-helper';
 import Card from './Card';
 import { ResponsiveContainer, AreaChart, Area, Tooltip, XAxis, YAxis } from 'recharts'
 import { chartConfig } from './config';
 import ChartFilter from './ChartFilter';
 import { fetchHistoricalData } from '../../api/stock-api';
 
-const Chart = () => {
-    const [data, setData] = useState(mockHistoricalData);
+const Chart = ({symbol}) => {
     const [filter, setFilter] = useState("1W");
-    const [data2, setData2] = useState(mockData2);
-    const [transformedData, setTransformedData] = useState(null);
+    const [data, setData] = useState(mockData2);
+    const [chartData, setChartData] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const transformData = (data) => {
-          return data.values.reduce((acc, item) => {
-            for (const key in item) {
-              if (!acc[key]) {
-                acc[key] = [];
-              }
-              if (key === 'volume') {
-                acc[key].push(parseInt(item[key], 10));
-              } else if (key === 'datetime') {
-                acc[key].push(item[key]); // Keep datetime as string
-              } else {
-                acc[key].push(parseFloat(item[key]));
-              }
-            }
-            return acc;
-          }, {});
+        const fetchData = async () => {
+          try {
+            const { interval, days, weeks, months, years } = chartConfig[filter];
+            const date = new Date();
+            const startdate = createDate(date, -days, -weeks, -months, -years);
+            const formattedStartDate = formatDate(startdate);
+            const fetchedData = await fetchHistoricalData(symbol, interval, formattedStartDate);
+            setData(fetchedData);
+            setLoading(false);
+          } catch (error) {
+            console.error('Error fetching data:', error);
+            setLoading(false);
+          }
         };
-        console.log(transformData(data2));
-        setTransformedData(transformData(data2));
-      }, [data2]);
+    
+        fetchData();
+      }, [filter]);
 
-
-    // useEffect(() => {
-    //     setData(fetchHistoricalData("symbol","",""))
-    // }, [filter]);
-
-    const formatData = () => {
-        return data.c.map((item, index) => {
-            return {
-                value: item.toFixed(2),
-                date: convertUnixTimestampToDate(data.t[index])
+    useEffect(() => {
+        if(data && !loading){
+            const transformData = (data) => {
+                return data.values.reduce((acc, item) => {
+                  for (const key in item) {
+                    if (!acc[key]) {
+                      acc[key] = [];
+                    }
+                    if (key === 'volume') {
+                      acc[key].unshift(parseInt(item[key], 10)); // Push to the beginning
+                    } else if (key === 'datetime') {
+                      acc[key].unshift(item[key]); // Keep datetime as string and push to the beginning
+                    } else {
+                      acc[key].unshift(parseFloat(item[key])); // Push to the beginning
+                    }
+                  }
+                  return acc;
+                }, {});
+            };
+            const formatData = (data) => {
+                return data.close.map((item, index) => {
+                    return {
+                        value: item.toFixed(2),
+                        date: (data.datetime[index])
+                    }
+                })
             }
-        })
-    }
+            console.log(data);
+            setChartData(formatData(transformData(data)));
+        }
+      }, [data, loading]);
 
-    const formatData2 = () => {
-        return transformedData.close.map((item, index) => {
-            return {
-                value: item.toFixed(5),
-                date: ""
-            }
-        })
-    }
+
+
 
     return (
         <Card>
@@ -76,7 +85,7 @@ const Chart = () => {
                 })}
             </ul>
             <ResponsiveContainer>
-                <AreaChart data={formatData(data)}>
+                <AreaChart data={chartData}>
                 <defs>
                     <linearGradient id="chartColor" x1="0" y1="0" x2="0" y2="1">
                         <stop offset="5%" stopColor="#312e81" stopOpacity={0.8} />
