@@ -1,23 +1,69 @@
-import React, {useState} from 'react'
-import { mockHistoricalData } from '../../mockData/mock'
-import { convertUnixTimestampToDate } from '../../helpers/date-helper';
+import React, {useState, useEffect} from 'react'
+import { createDate, formatDate } from '../../helpers/date-helper';
 import Card from './Card';
 import { ResponsiveContainer, AreaChart, Area, Tooltip, XAxis, YAxis } from 'recharts'
 import { chartConfig } from './config';
 import ChartFilter from './ChartFilter';
+import { fetchHistoricalData } from '../../api/stock-api';
 
-const Chart = () => {
-    const [data, setData] = useState(mockHistoricalData);
+const Chart = ({symbol}) => {
     const [filter, setFilter] = useState("1W");
+    const [data, setData] = useState(null);
+    const [chartData, setChartData] = useState(null);
+    const [loading, setLoading] = useState(true);
 
-    const formatData = () => {
-        return data.c.map((item, index) => {
-            return {
-                value: item.toFixed(2),
-                date: convertUnixTimestampToDate(data.t[index])
+    useEffect(() => {
+        const fetchData = async () => {
+          try {
+            const { interval, days, weeks, months, years } = chartConfig[filter];
+            const date = new Date();
+            const startdate = createDate(date, -days, -weeks, -months, -years);
+            const formattedStartDate = formatDate(startdate);
+            const fetchedData = await fetchHistoricalData(symbol, interval, formattedStartDate);
+            setData(fetchedData);
+            setLoading(false);
+          } catch (error) {
+            console.error('Error fetching data:', error);
+            setLoading(false);
+          }
+        };
+    
+        fetchData();
+      }, [filter]);
+
+    useEffect(() => {
+        if(data && !loading){
+            const transformData = (data) => {
+                return data.values.reduce((acc, item) => {
+                  for (const key in item) {
+                    if (!acc[key]) {
+                      acc[key] = [];
+                    }
+                    if (key === 'volume') {
+                      acc[key].unshift(parseInt(item[key], 10)); // Push to the beginning
+                    } else if (key === 'datetime') {
+                      acc[key].unshift(item[key]); // Keep datetime as string and push to the beginning
+                    } else {
+                      acc[key].unshift(parseFloat(item[key])); // Push to the beginning
+                    }
+                  }
+                  return acc;
+                }, {});
+            };
+            const formatData = (data) => {
+                return data.close.map((item, index) => {
+                    return {
+                        value: item.toFixed(2),
+                        date: (data.datetime[index])
+                    }
+                })
             }
-        })
-    }
+            setChartData(formatData(transformData(data)));
+        }
+      }, [data, loading]);
+
+
+
 
     return (
         <Card>
@@ -37,7 +83,7 @@ const Chart = () => {
                 })}
             </ul>
             <ResponsiveContainer>
-                <AreaChart data={formatData(data)}>
+                <AreaChart data={chartData}>
                 <defs>
                     <linearGradient id="chartColor" x1="0" y1="0" x2="0" y2="1">
                         <stop offset="5%" stopColor="#312e81" stopOpacity={0.8} />

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import Card from '../components/StockPage/Card'
 import Details from '../components/StockPage/Details'
 import Overview from '../components/StockPage/Overview'
 import Chart from '../components/StockPage/Chart'
@@ -36,7 +35,7 @@ const StockPage = () => {
     useEffect(() => {
         updateStockDetails();
         updateStockOverview();
-      }, [tickerSymbol]);
+    }, [tickerSymbol]);
 
     return (
         <div className="bg-black h-screen grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 grid-rows-8 md:grid-rows-7 xl:grid-rows-5 auto-rows-fr gap-6 p-10 text-gray-300"> 
@@ -47,7 +46,7 @@ const StockPage = () => {
                 </div>
             </div>
             <div className="md:col-span-2 row-span-4">
-                <Chart />
+                <Chart symbol={tickerSymbol}/>
             </div>
             <div className="">
                 <Overview 
