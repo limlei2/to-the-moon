@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import Card from '../components/StockPage/Card'
 import Details from '../components/StockPage/Details'
 import Overview from '../components/StockPage/Overview'
 import Chart from '../components/StockPage/Chart'

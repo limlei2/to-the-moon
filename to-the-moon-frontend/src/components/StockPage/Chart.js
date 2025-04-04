@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import { mockData2 } from '../../mockData/mock'
-import { convertUnixTimestampToDate, createDate, formatDate } from '../../helpers/date-helper';
+import { createDate, formatDate } from '../../helpers/date-helper';
 import Card from './Card';
 import { ResponsiveContainer, AreaChart, Area, Tooltip, XAxis, YAxis } from 'recharts'
 import { chartConfig } from './config';
@@ -9,7 +8,7 @@ import { fetchHistoricalData } from '../../api/stock-api';
 
 const Chart = ({symbol}) => {
     const [filter, setFilter] = useState("1W");
-    const [data, setData] = useState(mockData2);
+    const [data, setData] = useState(null);
     const [chartData, setChartData] = useState(null);
     const [loading, setLoading] = useState(true);
 
@@ -59,7 +58,6 @@ const Chart = ({symbol}) => {
                     }
                 })
             }
-            console.log(data);
             setChartData(formatData(transformData(data)));
         }
       }, [data, loading]);
