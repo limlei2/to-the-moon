@@ -18,7 +18,6 @@ const Login = () => {
         e.preventDefault();
         try {
             const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/users/login`, { email, password });
-            console.log(response);
             if (response.status === 200) {
                 const id = response.data.id;
                 const token = response.data.data;

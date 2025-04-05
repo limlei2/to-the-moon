@@ -39,7 +39,6 @@ export const fetchHistoricalData = async (
     startdate
 ) => {
     const url = `https://api.twelvedata.com/time_series?symbol=${symbol}&start_date=${startdate}&interval=${interval}&apikey=${process.env.REACT_APP_TWELVEDATA_KEY}`;
-    console.log(url);
     const response = await fetch(url);
 
     if(!response.ok){

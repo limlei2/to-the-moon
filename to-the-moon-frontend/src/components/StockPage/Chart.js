@@ -13,6 +13,7 @@ const Chart = ({symbol}) => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        setLoading(true);
         const fetchData = async () => {
           try {
             const { interval, days, weeks, months, years } = chartConfig[filter];
