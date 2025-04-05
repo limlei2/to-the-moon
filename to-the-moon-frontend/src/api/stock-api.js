@@ -36,10 +36,10 @@ export const fetchQuote = async(stockSymbol) => {
 export const fetchHistoricalData = async (
     symbol,
     interval,
-    startdate
+    startdate,
+    enddate
 ) => {
-    const url = `https://api.twelvedata.com/time_series?symbol=${symbol}&start_date=${startdate}&interval=${interval}&apikey=${process.env.REACT_APP_TWELVEDATA_KEY}`;
-    console.log(url);
+    const url = `https://api.twelvedata.com/time_series?symbol=${symbol}&start_date=${startdate}&end_date=${enddate}&interval=${interval}&apikey=${process.env.REACT_APP_TWELVEDATA_KEY}`;
     const response = await fetch(url);
 
     if(!response.ok){

@@ -13,13 +13,16 @@ const Chart = ({symbol}) => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        setLoading(true);
         const fetchData = async () => {
           try {
             const { interval, days, weeks, months, years } = chartConfig[filter];
             const date = new Date();
-            const startdate = createDate(date, -days, -weeks, -months, -years);
-            const formattedStartDate = formatDate(startdate);
-            const fetchedData = await fetchHistoricalData(symbol, interval, formattedStartDate);
+            const endDate = createDate(date, -1, 0, 0, 0);
+            const startDate = createDate(endDate, -days, -weeks, -months, -years);
+            const formattedStartDate = formatDate(startDate);
+            const formattedEndDate = formatDate(endDate);
+            const fetchedData = await fetchHistoricalData(symbol, interval, formattedStartDate, formattedEndDate);
             setData(fetchedData);
             setLoading(false);
           } catch (error) {

@@ -72,7 +72,7 @@ const Home = () => {
           <div className="w-1/2">
             <h1 className="text-3xl mb-2" style={{fontFamily: 'TypeMachine, sans-serif'}}>Track all the major stocks, ETFs, and options available to the public</h1>
             <p className="text-md mb-8">
-            Our platform connects you to a broad selection of stocks, options, and ETFs. We offer real-time 
+            Our platform connects you to a broad selection of US stocks. We offer nearly real-time 
             data to keep you informed and support your investment decisions. Whether you're monitoring market 
             trends or planning your next move, our tool helps you stay ahead.
             </p>
