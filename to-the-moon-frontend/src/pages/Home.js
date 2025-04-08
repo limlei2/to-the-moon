@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import { useSelector } from "react-redux";
 import { selectUser } from "../store/userSlice"
@@ -6,25 +6,30 @@ import { selectUser } from "../store/userSlice"
 import { Link } from 'react-router-dom';
 
 import { restClient } from '@polygon.io/client-js';
+import { fetchHomeData } from '../api/stock-api';
 
 const Home = () => {
 
   const user = useSelector(selectUser);
+  const [stocks, setStocks] = useState([]);
+
+
+  const fetchStocks = async () => {
+    try {
+      const result = await fetchHomeData();
+      setStocks(result);
+      console.log(result);
+    } catch(err){
+      setStocks({});
+      console.log(err);
+    }
+  }
+
+  useEffect(() => {
+    fetchStocks();
+  }, [user]);
 
   if(user){
-    const rest = restClient(process.env.REACT_APP_POLYGON_KEY);
-
-    rest.reference.tickers({
-      market: "stocks",
-      active: "true",
-      order: "asc",
-      limit: 100,
-      sort: "ticker"
-  }).then((data) => {
-    console.log(data);
-  }).catch(e => {
-    console.error('An error happened:', e);
-  });
     return (
       <div>
         Hi Logged In User

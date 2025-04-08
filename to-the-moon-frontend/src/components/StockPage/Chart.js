@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import { createDate, formatDate } from '../../helpers/date-helper';
+import { createDate, formatDate, isWeekend } from '../../helpers/date-helper';
 import Card from './Card';
 import { ResponsiveContainer, AreaChart, Area, Tooltip, XAxis, YAxis } from 'recharts'
 import { chartConfig } from './config';
@@ -20,9 +20,16 @@ const Chart = ({symbol}) => {
             const date = new Date();
             const endDate = createDate(date, -1, 0, 0, 0);
             const startDate = createDate(endDate, -days, -weeks, -months, -years);
-            const formattedStartDate = formatDate(startDate);
-            const formattedEndDate = formatDate(endDate);
+            let formattedStartDate = formatDate(startDate);
+            let formattedEndDate = formatDate(endDate);
+            if(filter == "1D") {
+              while(isWeekend(formattedEndDate)){
+                formattedStartDate = formatDate(createDate(formattedStartDate, -1, 0, 0, 0));
+                formattedEndDate = formatDate(createDate(formattedEndDate, -1, 0, 0, 0));
+              }
+            }
             const fetchedData = await fetchHistoricalData(symbol, interval, formattedStartDate, formattedEndDate);
+            
             setData(fetchedData);
             setLoading(false);
           } catch (error) {
@@ -30,7 +37,6 @@ const Chart = ({symbol}) => {
             setLoading(false);
           }
         };
-    
         fetchData();
       }, [filter]);
 
