@@ -22,7 +22,7 @@ const Chart = ({symbol}) => {
             const startDate = createDate(endDate, -days, -weeks, -months, -years);
             let formattedStartDate = formatDate(startDate);
             let formattedEndDate = formatDate(endDate);
-            if(filter == "1D") {
+            if(filter === "1D") {
               while(isWeekend(formattedEndDate)){
                 formattedStartDate = formatDate(createDate(formattedStartDate, -1, 0, 0, 0));
                 formattedEndDate = formatDate(createDate(formattedEndDate, -1, 0, 0, 0));

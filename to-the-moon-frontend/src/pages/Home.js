@@ -5,7 +5,6 @@ import { selectUser } from "../store/userSlice"
 
 import { Link } from 'react-router-dom';
 
-import { restClient } from '@polygon.io/client-js';
 import { fetchHomeData } from '../api/stock-api';
 
 const Home = () => {

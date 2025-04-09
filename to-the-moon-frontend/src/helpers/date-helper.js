@@ -20,5 +20,5 @@ export const formatDate = (date1) => {
 export const isWeekend = (dateString) => {
     const date = new Date(dateString);
     const dayOfWeek = date.getDay();
-    return dayOfWeek === 0 || dayOfWeek === 6 || dayOfWeek == 1;
+    return dayOfWeek === 0 || dayOfWeek === 6 || dayOfWeek === 1;
 }
