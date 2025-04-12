@@ -19,6 +19,7 @@ async function connect(){
         console.error(e);
     }
 }
+
 connect();
 
 app.use("/api/users", userRoute);
