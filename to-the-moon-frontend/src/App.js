@@ -12,6 +12,8 @@ import LoggedInNavbar from "./components/Navbars/LoggedInNavbar";
 import { useSelector } from "react-redux";
 import { selectUser } from "./store/userSlice";
 
+import { ToastContainer } from "react-toastify";
+
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function App() {
@@ -35,6 +37,7 @@ function App() {
           </Routes>
         </div>
       </Router>
+      <ToastContainer position="top-right" autoClose={1500} />
       </>
   );
 }

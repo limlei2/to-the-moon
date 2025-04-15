@@ -10,6 +10,8 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { selectUser } from "../store/userSlice"
 
+import { toast } from "react-toastify";
+
 const StockPage = () => {
 
     const user = useSelector(selectUser);
@@ -50,6 +52,23 @@ const StockPage = () => {
         }
     }
 
+    const handleLike = async () => {
+        try {
+            if(liked){
+                setLiked(false);
+                toast.info("Removed from portfolio");
+            } else {
+                setLiked(true);
+                toast.success("Added to portfolio!");
+            }
+            //const result = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/${user.id}/${tickerSymbol}`);
+        } catch(err){
+            setLiked(false);
+            console.log(err);
+            toast.error("An Error Occured, Please Try Again");
+        }
+    }
+
     useEffect(() => {
         updateStockDetails();
         updateStockOverview();
@@ -61,9 +80,15 @@ const StockPage = () => {
                 <div className="w-full h-full rounded-md relative p-8 border-2 bg-gray-900 border-gray-800 flex flex-row">
                     <img src={stockDetails.logo} alt="Logo" className="h-13 w-13 mr-6"/>
                     <h1 className="text-4xl">{stockDetails.name}</h1>
-                    <StarIcon className="ml-auto h-12 w-12 text-yellow-400 hover:cursor-pointer hover:fill-yellow-400"/>
+                    <StarIcon
+                        onClick={handleLike}
+                        className={`ml-auto w-12 h-12 cursor-pointer transform transition duration-150 ${
+                            liked
+                            ? "text-yellow-400 fill-yellow-400"
+                            : "text-yellow-400 fill-transparent"
+                        } hover:scale-110`}
+                    />
                 </div>
-                
             </div>
             <div className="md:col-span-2 row-span-4">
                 <Chart symbol={tickerSymbol}/>
