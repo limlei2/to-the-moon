@@ -55,13 +55,24 @@ const StockPage = () => {
     const handleLike = async () => {
         try {
             if(liked){
-                setLiked(false);
-                toast.info("Removed from portfolio");
+                const result = await axios.delete(`${process.env.REACT_APP_BACKEND_URL}/${user.id}/${tickerSymbol}`);
+                if(result.status == 203){
+                    setLiked(false);
+                    toast.info("Removed from portfolio");
+                } else {
+                    toast.error("Internal Server Error. Please try again later.")
+                }
+                
             } else {
-                setLiked(true);
-                toast.success("Added to portfolio!");
+                const result = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/${user.id}/${tickerSymbol}`);
+                if(result.status == 201){
+                    setLiked(true);
+                    toast.success("Added to portfolio!");
+                } else {
+                    toast.error("Internal Server Error. Please try again later.")
+                }
             }
-            //const result = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/${user.id}/${tickerSymbol}`);
+            
         } catch(err){
             setLiked(false);
             console.log(err);
