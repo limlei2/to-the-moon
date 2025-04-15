@@ -37,4 +37,19 @@ router.post("/", async (req, res) => {
     }
 })
 
+router.delete("/", async (req, res) => {
+    const {ownerId, stockId} = req.body;
+
+    try {
+        const stock = await Stock.findOne({ownerId, stockId})
+        if (stock) {
+            
+        } else {
+            
+        }
+    } catch(err){
+        res.status(500).json({ message: err.message })
+    }
+})
+
 module.exports = router;

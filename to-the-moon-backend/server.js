@@ -6,6 +6,7 @@ const dotenv = require('dotenv');
 const PORT = 8080;
 
 const userRoute = require("./routes/userRoute");
+const stockRoute = require("./routes/stockRoute")
 
 app.use(cors());
 app.use(express.json());
@@ -23,6 +24,7 @@ async function connect(){
 connect();
 
 app.use("/api/users", userRoute);
+app.use("/api/stocks", stockRoute);
 
 app.listen(PORT, () => {
     console.log(`Server started on port ${PORT}`);
