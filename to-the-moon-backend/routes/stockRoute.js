@@ -1,9 +1,19 @@
 const express = require('express');
 const router = express.Router();
 const Stock = require("../models/stockModel");
-const dotenv = require('dotenv');
+const authenticateToken = require('../middleware/auth');
 
-router.get("/:ownerId/:stockId", async (req, res) => {
+router.get("/:ownerId", authenticateToken, async (req, res) => {
+    const { ownerId } = req.params;
+    try {
+        const stocks = await Stock.find({ ownerId });
+        return res.status(200).json(stocks);
+    } catch(err) {
+        return res.status(500).json({ message: err.message });
+    }
+});
+
+router.get("/:ownerId/:stockId", authenticateToken, async (req, res) => {
     const { ownerId, stockId } = req.params;
     try {
         const stock = await Stock.findOne({ownerId, stockId})
@@ -13,7 +23,7 @@ router.get("/:ownerId/:stockId", async (req, res) => {
     }
 });
 
-router.post("/", async (req, res) => {
+router.post("/", authenticateToken, async (req, res) => {
     const {ownerId, stockId} = req.body;
     try {
         const existingStock = await Stock.findOne({ ownerId, stockId });
@@ -32,7 +42,7 @@ router.post("/", async (req, res) => {
     }
 })
 
-router.delete("/:ownerId/:stockId", async (req, res) => {
+router.delete("/:ownerId/:stockId", authenticateToken, async (req, res) => {
     const {ownerId, stockId} = req.params;
     try {
         const stock = await Stock.findOne({ownerId, stockId})

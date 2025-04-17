@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const { User, validate } = require("../models/userModel");
-const dotenv = require('dotenv');
 const joi = require("joi");
+const jwt = require('jsonwebtoken');
 
 const { compare, genSalt, hash } = require("bcrypt");
 
@@ -16,7 +16,6 @@ router.post("/register", async (req, res) => {
         if(exists){
             return res.status(409).send({message: "Email already has an existing account!"});
         }
-        dotenv.config();
         const salt = await genSalt(Number(process.env.SALT));
         const hashedPassword = await hash(req.body.password, salt);
         await new User({ ...req.body, password: hashedPassword}).save();
@@ -41,8 +40,10 @@ router.post("/login", async (req, res) => {
             return res.status(401).send({message: "Invalid email or password"});
         }
         const token = user.generateAuthToken();
-        res.status(200).send({data: token, id: user._id, message: "Logged In Successfully!"});
+        const decoded = jwt.decode(token);
+        res.status(200).send({data: token, id: user._id, expiresAt: decoded.exp * 1000, message: "Logged In Successfully!"});
     } catch (err) {
+        console.error("Login error:", err);
         res.status(500).send({message: "Internal Server Error"})
     }
 })

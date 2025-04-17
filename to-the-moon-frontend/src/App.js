@@ -15,9 +15,12 @@ import { selectUser } from "./store/userSlice";
 import { ToastContainer } from "react-toastify";
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import useAutoLogout from "./hooks/useAutoLogout";
 
 function App() {
   const user = useSelector(selectUser);
+  useAutoLogout();
+  
   return (
     <>
       <Router>

@@ -2,29 +2,28 @@ const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const joi = require('joi');
 const passwordComplexity = require('joi-password-complexity');
-const dotenv = require('dotenv');
 
 const userSchema = new mongoose.Schema(
     {
         email: {
             type: String,
-            require: true,
+            required: true,
             unique: true
         },
 
         password: {
             type: String,
-            require: true
+            required: true
         },
 
         fName: {
             type: String,
-            require: true
+            required: true
         },
 
         lName: {
             type: String,
-            require: true
+            required: true
         }
     },
     {
@@ -32,11 +31,13 @@ const userSchema = new mongoose.Schema(
     }
 )
 
-userSchema.methods.generateAuthToken = function() {
-    dotenv.config();
-    const token = jwt.sign({_id:this._id}, process.env.JWT_KEY, { expiresIn: "7d" });
-    return token;
-}
+userSchema.methods.generateAuthToken = function () {
+    return jwt.sign(
+      { _id: this._id },
+      process.env.JWT_KEY,
+      { expiresIn: "3d" }
+    );
+  };
 
 const User = mongoose.model("User", userSchema);
 

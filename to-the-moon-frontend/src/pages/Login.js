@@ -5,6 +5,8 @@ import { login } from '../store/userSlice';
 import { Link } from 'react-router-dom';
 import axios from "axios";
 
+import { toast } from "react-toastify";
+
 const Login = () => {
     //states
     const [email, setEmail] = useState('');
@@ -21,14 +23,16 @@ const Login = () => {
             if (response.status === 200) {
                 const id = response.data.id;
                 const token = response.data.data;
-                dispatch(login({ id: id, token: token }));
+                const expiresAt = response.data.expiresAt;
+                dispatch(login({ id: id, token: token , expiresAt: expiresAt}));
+                toast.success("Login Successful!")
                 navigate('/');
                 setEmail('');
                 setPassword('');
             } else if (response.status === 401){
-                alert('Invalid email or password');
+                toast.error('Invalid email or password');
             } else {
-                alert('Internal Server Error')
+                toast.error('Internal Server Error')
             }
         } catch (error) {
             setError(error.response ? error.response.data.message : 'An error occurred during login.');

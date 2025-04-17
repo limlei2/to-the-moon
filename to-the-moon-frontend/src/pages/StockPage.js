@@ -15,6 +15,7 @@ import { toast } from "react-toastify";
 const StockPage = () => {
 
     const user = useSelector(selectUser);
+    const token = user?.token;
 
     const { tickerSymbol } = useParams();
 
@@ -46,7 +47,12 @@ const StockPage = () => {
     const updateLiked = async () => {
         setIsLiking(true);
         try {
-            const result = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/stocks/${user.id}/${tickerSymbol}`);
+            const result = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/stocks/${user.id}/${tickerSymbol}`,
+                {
+                  headers: {
+                    Authorization: `Bearer ${token}`,
+                  },
+                });
             setLiked(result.data.exists);
         } catch(err){
             setLiked(false);
@@ -62,7 +68,12 @@ const StockPage = () => {
 
         try {
             if(liked){
-                const result = await axios.delete(`${process.env.REACT_APP_BACKEND_URL}/api/stocks/${user.id}/${tickerSymbol}`);
+                const result = await axios.delete(`${process.env.REACT_APP_BACKEND_URL}/api/stocks/${user.id}/${tickerSymbol}`,
+                    {
+                      headers: {
+                        Authorization: `Bearer ${token}`,
+                      },
+                    });
                 if(result.status === 204 || result.status === 404){
                     setLiked(false);
                     toast.info("Removed from portfolio");
@@ -71,10 +82,16 @@ const StockPage = () => {
                 }
                 
             } else {
-                const result = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/stocks/`,{
-                    ownerId: user.id,
-                    stockId: tickerSymbol
-                });
+                const result = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/stocks/`,
+                    {
+                        ownerId: user.id,
+                        stockId: tickerSymbol
+                    },
+                    {
+                      headers: {
+                        Authorization: `Bearer ${token}`,
+                      },
+                    });
                 if(result.status === 201 || result.status === 409){
                     setLiked(true);
                     toast.success("Added to portfolio!");

@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import axios from "axios";
 
+import { toast } from "react-toastify";
+
 const Register = () => {
   const [fName, setFName] = useState('');
   const [lName, setLName] = useState('');
@@ -19,16 +21,16 @@ const Register = () => {
         const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/users/register`, { fName, lName, email, password });
         console.log(response);
         if (response.status === 201) {
-          alert('Account created successfully! Redirecting you to login')
+          toast.success('Account created successfully! Redirecting you to login')
           navigate('/login');
           setFName("");
           setLName("");
           setEmail("");
           setPassword("");
         } else if (response.status === 401){
-          alert('Invalid email or password');
+          toast.error('Invalid email or password');
         } else {
-          alert('Internal Server Error')
+          toast.error('Internal Server Error')
         }
       } catch (error) {
         setError(error.response ? error.response.data.message : 'An error occurred during registration.');
