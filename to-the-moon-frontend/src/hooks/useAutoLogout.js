@@ -10,7 +10,6 @@ const user = useSelector(state => state.user.user);
 
 useEffect(() => {
     if (!user || !user.expiresAt) return;
-
     const now = Date.now();
     const timeLeft = user.expiresAt - now;
 
