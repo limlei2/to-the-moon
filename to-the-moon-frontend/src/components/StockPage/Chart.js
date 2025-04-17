@@ -11,6 +11,7 @@ const Chart = ({symbol}) => {
     const [data, setData] = useState(null);
     const [chartData, setChartData] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [yDomain, setYDomain] = useState([0, 0]);
 
     useEffect(() => {
         setLoading(true);
@@ -67,12 +68,19 @@ const Chart = ({symbol}) => {
                     }
                 })
             }
-            setChartData(formatData(transformData(data)));
+            const transformed = transformData(data);
+            const formatted = formatData(transformed);
+            setChartData(formatted);
+
+            // calculate y-axis range
+            const values = formatted.map((d) => parseFloat(d.value));
+            const min = Math.min(...values);
+            const max = Math.max(...values);
+            const buffer = (max - min) * 0.05 || 1; // prevent buffer = 0 if values are flat
+
+            setYDomain([min - buffer, max + buffer]);
         }
       }, [data, loading]);
-
-
-
 
     return (
         <Card>
@@ -113,7 +121,7 @@ const Chart = ({symbol}) => {
                         itemStyle={{color:"#818cf8"}}
                     />
                     <XAxis dataKey={"date"} />
-                    <YAxis domain={["dataMin", "dataMax"]} />
+                    <YAxis domain={yDomain} tickFormatter={(value) => value.toFixed(2)}/>
                 </AreaChart>
             </ResponsiveContainer>
         </Card>

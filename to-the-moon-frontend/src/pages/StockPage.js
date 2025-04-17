@@ -21,6 +21,7 @@ const StockPage = () => {
     const [stockDetails, setStockDetails] = useState({});
     const [quote, setQuote] = useState({});
     const [liked, setLiked] = useState(false);
+    const [isLiking, setIsLiking] = useState(false);
 
     const updateStockDetails = async () => {
         try {
@@ -43,20 +44,26 @@ const StockPage = () => {
     }
 
     const updateLiked = async () => {
+        setIsLiking(true);
         try {
-            const result = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/${user.id}/${tickerSymbol}`);
-            setLiked(result);
+            const result = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/stocks/${user.id}/${tickerSymbol}`);
+            setLiked(result.data.exists);
         } catch(err){
             setLiked(false);
             console.log(err);
+        } finally {
+            setIsLiking(false);
         }
     }
 
     const handleLike = async () => {
+        if (isLiking) return;
+        setIsLiking(true);
+
         try {
             if(liked){
-                const result = await axios.delete(`${process.env.REACT_APP_BACKEND_URL}/${user.id}/${tickerSymbol}`);
-                if(result.status == 203){
+                const result = await axios.delete(`${process.env.REACT_APP_BACKEND_URL}/api/stocks/${user.id}/${tickerSymbol}`);
+                if(result.status === 204 || result.status === 404){
                     setLiked(false);
                     toast.info("Removed from portfolio");
                 } else {
@@ -64,8 +71,11 @@ const StockPage = () => {
                 }
                 
             } else {
-                const result = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/${user.id}/${tickerSymbol}`);
-                if(result.status == 201){
+                const result = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/stocks/`,{
+                    ownerId: user.id,
+                    stockId: tickerSymbol
+                });
+                if(result.status === 201 || result.status === 409){
                     setLiked(true);
                     toast.success("Added to portfolio!");
                 } else {
@@ -77,12 +87,15 @@ const StockPage = () => {
             setLiked(false);
             console.log(err);
             toast.error("An Error Occured, Please Try Again");
+        } finally {
+            setIsLiking(false);
         }
     }
 
     useEffect(() => {
         updateStockDetails();
         updateStockOverview();
+        updateLiked();
     }, [tickerSymbol]);
 
     return (
@@ -92,12 +105,12 @@ const StockPage = () => {
                     <img src={stockDetails.logo} alt="Logo" className="h-13 w-13 mr-6"/>
                     <h1 className="text-4xl">{stockDetails.name}</h1>
                     <StarIcon
-                        onClick={handleLike}
+                        onClick={isLiking ? null : handleLike}
                         className={`ml-auto w-12 h-12 cursor-pointer transform transition duration-150 ${
                             liked
                             ? "text-yellow-400 fill-yellow-400"
                             : "text-yellow-400 fill-transparent"
-                        } hover:scale-110`}
+                        } ${isLiking ? "opacity-50 cursor-not-allowed" : "hover:scale-110"}`}
                     />
                 </div>
             </div>
