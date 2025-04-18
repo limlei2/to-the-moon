@@ -6,6 +6,7 @@ import { searchSymbols } from '../../api/stock-api';
 const Search = () => {
     const [input, setInput] = useState("");
     const [bestMatches, setBestMatches] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     const clear = () => {
         setInput("");
@@ -14,6 +15,7 @@ const Search = () => {
 
     const updateBestMatches = async () => {
         try {
+            setLoading(true);
             if(input) {
                 const searchResults = await searchSymbols(input);
                 const result = searchResults.result;
@@ -22,6 +24,8 @@ const Search = () => {
         } catch (err){
             setBestMatches([]);
             console.log(err);
+        } finally {
+            setLoading(false);
         }
     }
 
@@ -45,6 +49,11 @@ const Search = () => {
             }
         }}   
     />
+
+    {loading && (
+        <div className="m-1 animate-spin rounded-full h-4 w-4 border-t-2 border-gray-300"></div>
+    )}
+
     {input && (
         <button onClick={clear} className="m-1">
             <XIcon className="h-4 w-4 fill-gray-500" />

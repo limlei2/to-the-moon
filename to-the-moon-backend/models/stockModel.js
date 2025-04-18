@@ -4,12 +4,22 @@ const stockSchema = new mongoose.Schema(
     {
         ownerId: {
             type: String,
-            require: true
+            required: true
         },
 
         stockId: {
             type: String,
-            require: true
+            required: true
+        },
+
+        stockLogo: {
+            type: String,
+            required: true
+        },
+
+        stockName: {
+            type: String,
+            required: true
         }
     },
     {

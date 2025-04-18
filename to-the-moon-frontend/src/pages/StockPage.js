@@ -85,7 +85,9 @@ const StockPage = () => {
                 const result = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/stocks/`,
                     {
                         ownerId: user.id,
-                        stockId: tickerSymbol
+                        stockId: tickerSymbol,
+                        stockLogo: stockDetails.logo,
+                        stockName: stockDetails.name
                     },
                     {
                       headers: {

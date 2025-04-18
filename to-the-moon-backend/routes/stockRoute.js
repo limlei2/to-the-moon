@@ -24,13 +24,13 @@ router.get("/:ownerId/:stockId", authenticateToken, async (req, res) => {
 });
 
 router.post("/", authenticateToken, async (req, res) => {
-    const {ownerId, stockId} = req.body;
+    const {ownerId, stockId, stockLogo, stockName} = req.body;
     try {
         const existingStock = await Stock.findOne({ ownerId, stockId });
         if (existingStock) {
             return res.status(409).json({ message: "Stock already exists" });
         }
-        const stock = new Stock({ownerId, stockId});
+        const stock = new Stock({ownerId, stockId, stockLogo, stockName});
         const newStock = await stock.save();
         return res.status(201).json({
             _id: newStock._id,

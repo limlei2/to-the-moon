@@ -16,6 +16,7 @@ import { ToastContainer } from "react-toastify";
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import useAutoLogout from "./hooks/useAutoLogout";
+import PrivateRoute from "./components/PrivateRoute";
 
 function App() {
   const user = useSelector(selectUser);
@@ -33,9 +34,32 @@ function App() {
               <Route path="/" element={<Home />}/>
               <Route path="/register" element={<Register />}/>
               <Route path="/login" element={<Login />}/>
-              <Route path="/dashboard" element={<Dashboard />}/>
-              <Route path="/portfolio" element={<Portfolio />}/>
-              <Route path="/stock/:tickerSymbol" element={<StockPage />} />
+
+              <Route
+                path="/dashboard"
+                element={
+                  <PrivateRoute>
+                    <Dashboard />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/portfolio"
+                element={
+                  <PrivateRoute>
+                    <Portfolio />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/stock/:tickerSymbol"
+                element={
+                  <PrivateRoute>
+                    <StockPage />
+                  </PrivateRoute>
+                }
+              />
+
               <Route path="*" element={<NoPage />}/>
           </Routes>
         </div>
