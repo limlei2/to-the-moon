@@ -30,8 +30,8 @@ const Home = () => {
 
   if(user){
     return (
-      <div>
-        Hi Logged In User
+      <div className="h-screen bg-black text-white p-12">
+        Hi user
       </div>
     )
   } else {

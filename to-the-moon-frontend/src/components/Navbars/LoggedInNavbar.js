@@ -3,6 +3,7 @@ import Search from './Search'
 import { Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux';
 import { logout } from '../../store/userSlice';
+import Dropdown from '../Dropdown';
 
 const LoggedInNavbar = () => {
 
@@ -32,9 +33,13 @@ const LoggedInNavbar = () => {
             </li>
           </ul>
         </div>
-        <div className="flex">
-          <a href="/"><button onClick={handleLogout} type="button" className="border border-white text-white bg-black hover:bg-white hover:text-black transition focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-3xl text-lg px-6 py-2 text-center mx-2">Log Out</button></a>
-        </div>
+        <Dropdown
+          label="Menu"
+          items={[
+            { label: "Profile", href: "/profile" },
+            { label: "Logout", onClick: handleLogout },
+          ]}
+        />
       </div>
     </nav>
   )
