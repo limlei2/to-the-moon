@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import { createDate, formatDate, isWeekend } from '../../helpers/date-helper';
-import Card from './Card';
+import Card from '../Card';
 import { ResponsiveContainer, AreaChart, Area, Tooltip, XAxis, YAxis } from 'recharts'
 import { chartConfig } from './config';
 import ChartFilter from './ChartFilter';
@@ -12,6 +12,7 @@ const Chart = ({symbol}) => {
     const [chartData, setChartData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [yDomain, setYDomain] = useState([0, 0]);
+    const [valid, setValid] = useState(true);
 
     useEffect(() => {
         setLoading(true);
@@ -30,11 +31,19 @@ const Chart = ({symbol}) => {
               }
             }
             const fetchedData = await fetchHistoricalData(symbol, interval, formattedStartDate, formattedEndDate);
-            
-            setData(fetchedData);
-            setLoading(false);
+
+            if (!fetchedData || !fetchedData.values || fetchedData.status === "error") {
+              setValid(false);
+              setData(null);
+            } else {
+              setValid(true);
+              setData(fetchedData);
+            }
           } catch (error) {
             console.error('Error fetching data:', error);
+            setData(null);
+            setValid(false);
+          } finally {
             setLoading(false);
           }
         };
@@ -43,6 +52,7 @@ const Chart = ({symbol}) => {
 
     useEffect(() => {
         if(data && !loading){
+          console.log(data);
             const transformData = (data) => {
                 return data.values.reduce((acc, item) => {
                   for (const key in item) {
@@ -99,31 +109,34 @@ const Chart = ({symbol}) => {
                     )
                 })}
             </ul>
-            <ResponsiveContainer>
+            {!valid ? (
+              <div className="p-8 text-center text-red-400">Unable to load chart data. Please try again later.</div>
+            ) : (
+              <ResponsiveContainer>
                 <AreaChart data={chartData}>
-                <defs>
+                  <defs>
                     <linearGradient id="chartColor" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#312e81" stopOpacity={0.8} />
-                        <stop offset="95%" stopColor="#312e81" stopOpacity={0} />
+                      <stop offset="5%" stopColor="#312e81" stopOpacity={0.8} />
+                      <stop offset="95%" stopColor="#312e81" stopOpacity={0} />
                     </linearGradient>
-
-                </defs>
-                    <Area 
-                        type="monotone" 
-                        dataKey="value" 
-                        stroke="#312e81" 
-                        fillOpacity={1}
-                        strokeWidth={0.5}
-                        fill="url(#chartColor)"
-                    />
-                    <Tooltip 
-                        contentStyle={{backgroundColor: "#111827"}}
-                        itemStyle={{color:"#818cf8"}}
-                    />
-                    <XAxis dataKey={"date"} />
-                    <YAxis domain={yDomain} tickFormatter={(value) => value.toFixed(2)}/>
+                  </defs>
+                  <Area
+                    type="monotone"
+                    dataKey="value"
+                    stroke="#312e81"
+                    fillOpacity={1}
+                    strokeWidth={0.5}
+                    fill="url(#chartColor)"
+                  />
+                  <Tooltip
+                    contentStyle={{ backgroundColor: "#111827" }}
+                    itemStyle={{ color: "#818cf8" }}
+                  />
+                  <XAxis dataKey={"date"} />
+                  <YAxis domain={yDomain} tickFormatter={(value) => value.toFixed(2)} />
                 </AreaChart>
-            </ResponsiveContainer>
+              </ResponsiveContainer>
+            )}
         </Card>
     )
 }
