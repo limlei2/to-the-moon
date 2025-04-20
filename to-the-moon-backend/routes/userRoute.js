@@ -70,7 +70,7 @@ router.get("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
     const id = req.params.id;
     try {
-        const user = await User.find({_id: id});
+        const user = await User.findById(id);
         res.json(user);
     } catch (err) {
         res.status(500).json({ message: err.message })
