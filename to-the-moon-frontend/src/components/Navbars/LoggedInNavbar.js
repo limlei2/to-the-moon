@@ -3,7 +3,7 @@ import Search from './Search'
 import { Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux';
 import { logout } from '../../store/userSlice';
-import Dropdown from '../Dropdown';
+import Dropdown from './Dropdown';
 
 const LoggedInNavbar = () => {
 
