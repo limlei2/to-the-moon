@@ -5,6 +5,7 @@ import NoPage from "./pages/NoPage"
 import StockPage from "./pages/StockPage"
 import Dashboard from "./pages/Dashboard";
 import Portfolio from "./pages/Portfolio";
+import Profile from "./pages/Profile";
 
 import Navbar from "./components/Navbars/Navbar"
 import LoggedInNavbar from "./components/Navbars/LoggedInNavbar";
@@ -35,6 +36,14 @@ function App() {
               <Route path="/register" element={<Register />}/>
               <Route path="/login" element={<Login />}/>
 
+              <Route
+                path="/profile"
+                element={
+                  <PrivateRoute>
+                    <Profile />
+                  </PrivateRoute>
+                }
+              />
               <Route
                 path="/dashboard"
                 element={

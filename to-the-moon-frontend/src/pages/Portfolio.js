@@ -19,7 +19,11 @@ const Portfolio = () => {
             Authorization: `Bearer ${token}`,
           },
         });
-    setStocks(result.data);
+      if(result.data.length === 0){
+        setStocks(null);
+      } else {
+        setStocks(result.data);
+      }
     } catch(err){
       setStocks(null);
       console.log(err);
@@ -31,7 +35,7 @@ const Portfolio = () => {
   }, [])
 
   return (
-    <div className="bg-black h-screen text-white p-10">
+    <div className="bg-black h-screen text-white px-36 p-12">
       <h2 className="text-3xl font-semibold mb-10">Portfolio</h2>
       {stocks ? (
         <div className="flex flex-row gap-4">
@@ -48,7 +52,10 @@ const Portfolio = () => {
           ))}
         </div>
       ) : (
-        <p>No stocks found or not logged in.</p>
+        <>
+          <p>You do not have any stocks in your portfolio yet.</p>
+          <p>Get started and add your stocks now!</p>
+        </>
       )}
     </div>
   )

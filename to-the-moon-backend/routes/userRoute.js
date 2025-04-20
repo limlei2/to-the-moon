@@ -3,6 +3,7 @@ const router = express.Router();
 const { User, validate } = require("../models/userModel");
 const joi = require("joi");
 const jwt = require('jsonwebtoken');
+const passwordComplexity = require('joi-password-complexity');
 
 const { compare, genSalt, hash } = require("bcrypt");
 
@@ -69,10 +70,46 @@ router.get("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
     const id = req.params.id;
     try {
-        const users = await User.find({_id: id});
-        res.json(users);
+        const user = await User.find({_id: id});
+        res.json(user);
     } catch (err) {
         res.status(500).json({ message: err.message })
+    }
+});
+
+router.patch('/:id', async (req, res) => {
+    const { id } = req.params;
+    const { email, password, lName, fName } = req.body;
+
+    // Define validation schema for partial update
+    const schema = joi.object({
+        email: joi.string().email().optional().label("Email"),
+        password: passwordComplexity().optional().label("Password"),
+        fName: joi.string().optional().label("First Name"),
+        lName: joi.string().optional().label("Last Name"),
+    });
+
+    const { error } = schema.validate(req.body);
+    if (error) return res.status(400).send({ message: error.details[0].message });
+
+    try {
+        const updateFields = {};
+
+        if (email) updateFields.email = email;
+        if (fName) updateFields.fName = fName;
+        if (lName) updateFields.lName = lName;
+        if (password) {
+            const salt = await genSalt(Number(process.env.SALT));
+            updateFields.password = await hash(password, salt);
+        }
+
+        const updatedUser = await User.findByIdAndUpdate(id, updateFields, { new: true });
+
+        if (!updatedUser) return res.status(404).send({ message: 'User not found' });
+
+        res.status(200).send({ message: "User updated successfully", user: updatedUser });
+    } catch (err) {
+        res.status(500).send({ message: "Failed to update user", error: err.message });
     }
 });
 

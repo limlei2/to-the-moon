@@ -1,16 +1,20 @@
 import React from 'react'
 import Search from './Search'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux';
 import { logout } from '../../store/userSlice';
 import Dropdown from './Dropdown';
+import { toast } from "react-toastify";
 
 const LoggedInNavbar = () => {
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     dispatch(logout());
+    navigate('/');
+    toast.info("Logged Out")
   };
 
   return (
