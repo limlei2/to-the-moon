@@ -35,7 +35,7 @@ const Portfolio = () => {
   }, [])
 
   return (
-    <div className="bg-black h-screen text-white px-36 p-12">
+    <div className="bg-black min-h-screen text-white px-36 p-12">
       <h2 className="text-3xl font-semibold mb-10">Portfolio</h2>
       {stocks ? (
         <div className="flex flex-row gap-4">
