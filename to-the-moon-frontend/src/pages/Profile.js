@@ -36,13 +36,18 @@ const Profile = () => {
     setMessage('');
     setError('');
 
+    const payload = {
+      fName,
+      lName,
+      email,
+    };
+    
+    if (password) {
+      payload.password = password;
+    }
     try {
-        const res = await axios.patch(`${process.env.REACT_APP_BACKEND_URL}/api/users/${user.id}`, {
-            fName,
-            lName,
-            email,
-            password
-          }, {
+        const res = await axios.patch(`${process.env.REACT_APP_BACKEND_URL}/api/users/${user.id}`, payload, 
+          {
             headers: { Authorization: `Bearer ${user.token}` }
           });
           setMessage("Profile updated successfully.");
@@ -58,28 +63,30 @@ const Profile = () => {
       <h2 className="text-3xl font-bold mb-8">Profile</h2>
 
       <form onSubmit={handleSubmit} className="space-y-6 max-w-lg">
-        <div>
-          <label className="block mb-1 text-sm font-medium">First Name</label>
-          <input
-            type="text"
-            name="fName"
-            value={fName}
-            onChange={(e) => setFName(e.target.value)}
-            className="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required
-          />
-        </div>
+        <div className="flex flex-row">
+          <div>
+            <label className="block mb-1 text-sm font-medium">First Name</label>
+            <input
+              type="text"
+              name="fName"
+              value={fName}
+              onChange={(e) => setFName(e.target.value)}
+              className="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+          </div>
 
-        <div>
-          <label className="block mb-1 text-sm font-medium">Last Name</label>
-          <input
-            type="text"
-            name="lName"
-            value={lName}
-            onChange={(e) => setLName(e.target.value)}
-            className="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required
-          />
+          <div>
+            <label className="block mb-1 text-sm font-medium">Last Name</label>
+            <input
+              type="text"
+              name="lName"
+              value={lName}
+              onChange={(e) => setLName(e.target.value)}
+              className="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+          </div>
         </div>
 
         <div>
